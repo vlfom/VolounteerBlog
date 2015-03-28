@@ -9,6 +9,9 @@ class PostAdmin(admin.ModelAdmin):
         obj.author = request.user
         obj.save()
 
-admin.site.register(models.Category)
-admin.site.register(models.Tag)
+class TagAndCategoryAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
+
 admin.site.register(models.Post, PostAdmin)
+admin.site.register(models.Category, TagAndCategoryAdmin)
+admin.site.register(models.Tag, TagAndCategoryAdmin)

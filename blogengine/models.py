@@ -9,10 +9,10 @@ class Category(models.Model):
     description = models.TextField()
     slug = models.SlugField(max_length=40, unique=True, blank=True, null=True)
 
-    def save(self):
+    def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(unicode(self.name))
-        super(Category, self).save()
+        super(Category, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return "/category/%s/" % (self.slug)
@@ -28,10 +28,10 @@ class Tag(models.Model):
     description = models.TextField()
     slug = models.SlugField(max_length=40, unique=True, blank=True, null=True)
 
-    def save(self):
+    def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(unicode(self.name))
-        super(Tag, self).save()
+        super(Tag, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return "/tag/%s/" % (self.slug)
@@ -48,7 +48,7 @@ class Post(models.Model):
     author = models.ForeignKey(User)
     site = models.ForeignKey(Site)
     category = models.ForeignKey(Category, blank=True, null=True)
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, blank=True, null=True)
 
     def get_absolute_url(self):
         return "/%s/%s/%s/" % (self.pub_date.year, self.pub_date.month, self.slug)
