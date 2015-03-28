@@ -12,6 +12,7 @@ class PostAdmin(admin.ModelAdmin):
 class TagAndCategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
+admin.site.register(models.UserProfile)
 admin.site.register(models.Post, PostAdmin)
 admin.site.register(models.Category, TagAndCategoryAdmin)
 admin.site.register(models.Tag, TagAndCategoryAdmin)

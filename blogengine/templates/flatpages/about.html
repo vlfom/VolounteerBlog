@@ -1,0 +1,13 @@
+{% extends "blogengine/includes/base.html" %}
+
+    {% load custom_markdown %}
+    {% block header %}
+        <div class="page-header">
+            <h1>{{ flatpage.title }}</h1>
+        </div>
+    {% endblock %}
+    {% block content %}
+        <div class="post">
+            {{ flatpage.content|custom_markdown }}
+        </div>
+    {% endblock %}

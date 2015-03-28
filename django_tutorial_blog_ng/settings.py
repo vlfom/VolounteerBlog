@@ -34,10 +34,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blogengine',
     'django.contrib.sites',
     'django.contrib.flatpages',
     'django.contrib.syndication',
+    'django.contrib.sitemaps',
+    'easy_maps',
+    'blogengine',
 )
 
 SITE_ID = 1
@@ -86,6 +88,8 @@ TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'blogengine/../templates')]
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGIN_URL = '/login/'
 
 import dj_database_url
 DATABASES['default'] =  dj_database_url.config(default="sqlite:///db.sqlite3")

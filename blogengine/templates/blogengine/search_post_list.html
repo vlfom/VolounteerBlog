@@ -1,11 +1,13 @@
 {% extends "blogengine/includes/base.html" %}
 
     {% load custom_markdown %}
+
     {% block header %}
         <div class="page-header">
-            <h1>Останні записи</h1>
+            <h1>Пошук</h1>
         </div>
     {% endblock %}
+
     {% block content %}
         {% if object_list %}
             {% for post in object_list %}
@@ -24,15 +26,15 @@
                 </div>
             {% endfor %}
         {% else %}
-            <p>No posts found</p>
+            <p>За вашим запитом не знайдено жодного запису.</p>
         {% endif %}
 
         <ul class="pager">
             {% if page_obj.has_previous %}
-            <li class="previous"><a href="/{{ page_obj.previous_page_number }}/">Previous Page</a></li>
+                <li class="previous"><a href="/search?page={{ page_obj.previous_page_number }}&q={{ search }}">Previous Page</a></li>
             {% endif %}
             {% if page_obj.has_next %}
-            <li class="next"><a href="/{{ page_obj.next_page_number }}/">Next Page</a></li>
+                <li class="next"><a href="/search?page={{ page_obj.next_page_number }}&q={{ search }}">Next Page</a></li>
             {% endif %}
         </ul>
 
