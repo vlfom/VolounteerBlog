@@ -59,12 +59,15 @@
                 </div>
             </div>
         </div>
-
-        <div class="container-content">
+        <div class="container-content" id="content_title">
             {% block header %}{% endblock %}
         </div>
         <div class="container" id="container-main">
             {% block content %}{% endblock %}
+        </div>
+        <div class="navbar navbar-static-bottom transparent" id="footer">
+            <div class="container nav transparent" id="footer-container">
+            </div>
         </div>
         <div class="navbar navbar-fixed-bottom" id="footer">
             <div class="container nav" id="footer-container">

@@ -13,8 +13,8 @@
             {% for post in object_list %}
                 <div class="post col-md-12">
                     <h1><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h1>
-                    <h6>{{ post.pub_date }}</h6><br />
-                    <h4>{{ post.text|custom_markdown }}</h4><br />
+                    <h6 id="post_pub_date">{{ post.pub_date }}</h6>
+                    <h4 id="post_text">{{ post.text|custom_markdown }}</h4>
                     {% if post.category %}
                         <a href="{{ post.category.get_absolute_url }}"><span class="label label-primary">{{ post.category.name }}</span></a>
                     {% endif %}
@@ -31,10 +31,14 @@
 
         <ul class="pager">
             {% if page_obj.has_previous %}
-                <li class="previous"><a href="/search?page={{ page_obj.previous_page_number }}&q={{ search }}">Previous Page</a></li>
+                <li class="previous">
+                    <a href="/{{ page_obj.previous_page_number }}/">Попередня сторінка</a>
+                </li>
             {% endif %}
             {% if page_obj.has_next %}
-                <li class="next"><a href="/search?page={{ page_obj.next_page_number }}&q={{ search }}">Next Page</a></li>
+                <li class="next">
+                    <a href="/{{ page_obj.next_page_number }}/">Наступна сторінка</a>
+                </li>
             {% endif %}
         </ul>
 
