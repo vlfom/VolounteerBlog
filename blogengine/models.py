@@ -1,9 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
-from django.utils.text import slugify
-from django.utils import timezone
-from django.contrib.syndication.views import Feed
+from django.template import defaultfilters
+from unidecode import unidecode
 
 class Category(models.Model):
     name = models.CharField(max_length=200)
@@ -12,7 +11,7 @@ class Category(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(unicode(self.name))
+            self.slug = defaultfilters.slugify(unidecode(self.name))
         super(Category, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -31,7 +30,7 @@ class Tag(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(unicode(self.name))
+            self.slug = defaultfilters.slugify(unidecode(self.name))
         super(Tag, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -40,9 +39,36 @@ class Tag(models.Model):
     def __unicode__(self):
         return self.name
 
+class Delivery(models.Model):
+    title = models.CharField(max_length=200)
+    text = models.TextField()
+    delivery_date = models.DateTimeField()
+    slug = models.SlugField(max_length=40, unique=True, blank=True, null=True)
+    site = models.ForeignKey(Site)
+    author = models.ForeignKey(User, related_name='delivery_author')
+    recipients = models.ManyToManyField(User, blank=True, null=True, related_name='delivery_recipients')
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = original = defaultfilters.slugify(unidecode(self.title))
+            number = 0
+            print original
+            while True:
+                if not Post.objects.filter(slug=self.slug).exists():
+                    break
+                number += 1
+                self.slug = '%s-%d' % (original, number)
+        super(Delivery, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return self.title
+
+    class Meta:
+        ordering = ["-delivery_date"]
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
+    location = models.CharField(max_length=200)
     pub_date = models.DateTimeField()
     text = models.TextField()
     slug = models.SlugField(max_length=40, unique=True, blank=True, null=True)
@@ -57,9 +83,10 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = original = slugify(unicode(self.title))
+            self.slug = original = defaultfilters.slugify(unidecode(self.title))
             number = 0
-            while number >= 0:
+            print original
+            while True:
                 if not Post.objects.filter(slug=self.slug).exists():
                     break
                 number += 1

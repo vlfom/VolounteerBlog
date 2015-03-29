@@ -1,0 +1,21 @@
+{% extends "blogengine/includes/base.html" %}
+
+{% block header %}
+    <div class="page-header">
+        <h1>Керування записом</h1>
+    </div>
+{% endblock %}
+{% block content %}
+    <h2>Редагування запису</h2>
+    <form method="POST" class="post-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button name="edit" value="edit" type="submit" class="save btn btn-default">Редагувати запис</button>
+    </form>
+    <h2>Розсилання повідомлення</h2>
+    <form method="POST" class="delivery-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button name="edit" value="edit" type="submit" class="save btn btn-default">Розіслати повідомлення</button>
+    </form>
+{% endblock %}

@@ -16,6 +16,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.core.mail import EmailMessage
+from itertools import chain
 
 class CategoryListView(ListView):
     template_name = 'blogengine/category_post_list.html'
@@ -39,7 +40,7 @@ class CategoryListView(ListView):
 
 class TagListView(ListView):
     template_name = 'blogengine/tag_post_list.html'
-    
+
     def get_queryset(self):
         slug = self.kwargs['slug']
         try:
@@ -61,14 +62,17 @@ def post_subscribe(request, pub_date__year, pub_date__month, slug):
     except:
         pass
     post.save()
-    return redirect('/' + pub_date__year.__str__() + "/" + pub_date__month.__str__() + "/" + slug.__str__())
+    return redirect('/' + pub_date__year.__str__() + "/" + pub_date__month.__str__() + "/" + post.slug.__str__())
 
 @login_required
 def getSearchResults(request):
     query = request.GET.get('q', '')
     page = request.GET.get('page', 1)
     if query:
-        results = Post.objects.filter(Q(tags__name__icontains=query))
+        results = list(chain(
+            Post.objects.filter(Q(tags__name__icontains=query)),
+            Post.objects.filter(Q(category__name__icontains=query))
+        ))
     else:
         results = []
     pages = Paginator(results, 5)
@@ -91,10 +95,27 @@ def post_new(request):
             post.pub_date = timezone.now()
             post.site_id = get_current_site(request).id
             post.save()
-            return redirect(post.get_absolute_url(), pk=post.pk)
+            return redirect('/' + post.pub_date.year.__str__() + "/" + post.pub_date.month.__str__() + "/" + post.slug.__str__())
     else:
         form = PostForm()
-    return render(request, 'blogengine/post_edit.html', {'form': form })
+    return render(request, 'blogengine/post_create.html', {'form': form })
+
+@login_required
+def post_control(request, pub_date__year, pub_date__month, slug):
+    post = get_object_or_404(Post, slug=slug)
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.pub_date = timezone.now()
+            post.site_id = get_current_site(request).id
+            post.slug = slug
+            post.save()
+            return redirect('/' + post.pub_date.year.__str__() + "/" + post.pub_date.month.__str__() + "/" + post.slug.__str__())
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'blogengine/post_control.html', {'form': form })
 
 def register(request):
     context = RequestContext(request)

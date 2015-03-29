@@ -10,17 +10,28 @@ FIELD_NAME_MAPPING = {
     'tags': 'Теги',
 }
 
+class DeliveryForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(DeliveryForm, self).__init__(*args, **kwargs)
+        self.fields['title'].label = "Тема повідомлення"
+        self.fields['text'].label = "Текст повідомлення"
+
+    class Meta:
+        model = Post
+        fields = ('title', 'text')
+
 class PostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
         self.fields['title'].label = "Назва запису"
         self.fields['text'].label = "Текст запису"
+        self.fields['location'].label = "Розташування зустрічі чи організації"
         self.fields['category'].label = "Категорія"
         self.fields['tags'].label = "Теги"
 
     class Meta:
         model = Post
-        fields = ('title', 'text', 'category', 'tags')
+        fields = ('title', 'text', 'location', 'category', 'tags')
 
 class UserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

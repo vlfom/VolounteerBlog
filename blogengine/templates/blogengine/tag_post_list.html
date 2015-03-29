@@ -14,7 +14,7 @@
                 <div class="post col-md-12">
                     <h1 id="post-title"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h1>
                     <h6 id="post_pub_date">{{ post.pub_date }}</h6>
-                    <h4 id="post_text">{{ post.text|custom_markdown }}</h4>
+                    <h5 id="post_text">{{ post.text|custom_markdown }}</h5>
                     {% if post.category %}
                         <a href="{{ post.category.get_absolute_url }}"><span class="label label-primary">{{ post.category.name }}</span></a>
                     {% endif %}

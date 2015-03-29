@@ -232,3 +232,38 @@ label[for="id_tags"] {
 #main-link {
     line-height: 18px ;
 }
+#subscribe-btn,
+#edit-btn {
+    height: 30px ;
+}
+
+#subscribe-btn span,
+#subscribe-btn p,
+#edit-btn span,
+#edit-btn p {
+    display: inline-block ;
+}
+
+#subscribe-ic {
+    top: -1px ;
+    font-size: 20px ;
+}
+
+#edit-ic {
+    font-size: 16px ;
+}
+
+#subscribe-text,
+#edit-text {
+    position: relative ;
+    top: -7px ;
+    margin-left: 4px ;
+}
+
+#edit-text {
+    top: -2px ;
+}
+
+#edit-btn {
+    margin-top: 4px ;
+}

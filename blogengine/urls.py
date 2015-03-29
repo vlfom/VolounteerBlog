@@ -5,7 +5,6 @@ from django.views.generic import DetailView
 from django.contrib.sitemaps.views import sitemap
 from blogengine.sitemap import PostSitemap, FlatpageSitemap
 
-# Define sitemaps
 sitemaps = {
     'posts': PostSitemap,
     'pages': FlatpageSitemap
@@ -19,6 +18,9 @@ urlpatterns = patterns('',
     url(r'^(?P<pub_date__year>\d{4})/'
         r'(?P<pub_date__month>\d{1,2})/'
         r'(?P<slug>[a-zA-Z0-9-]+)/subscribe/$', views.post_subscribe, name='subscribe'),
+    url(r'^(?P<pub_date__year>\d{4})/'
+        r'(?P<pub_date__month>\d{1,2})/'
+        r'(?P<slug>[a-zA-Z0-9-]+)/control/$', views.post_control, name='control'),
     url(r'^category/(?P<slug>[a-zA-Z0-9-]+)/?$',
         CategoryListView.as_view(
             paginate_by=5,

@@ -8,18 +8,33 @@
 {% endblock %}
 {% block content %}
     <div class="post col-md-12">
-        <h1 id="post-title"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h1>
+        <h1 id="post-title">
+            <div id="post-title-text">
+                <a href="{{ post.get_absolute_url }}">
+                    {{ post.title }}
+                </a>
+            </div>
+        </h1>
         <h6 id="post_pub_date">{{ post.pub_date }}</h6>
-        <h4 id="post_text">{{ post.text|custom_markdown }}</h4>
+        {% if user == post.author %}
+            <a id="edit-btn"
+               class="btn btn-default"
+               href="{% url 'blogengine.views.post_control' pub_date__year=post.pub_date.year pub_date__month=post.pub_date.month slug=post.slug %}">
+                <span id="edit-ic" class="glyphicon glyphicon-pencil"></span>
+                <p id="edit-text">Керування записом</p>
+            </a>
+        {% endif %}
+        <h5 id="post_text">{{ post.text|custom_markdown }}</h5>
         {% if user.is_authenticated %}
-            <h4 id="post-location">Розташування:</h4>
+            <h5 id="post-location">Розташування:</h5>
             {% load easy_maps_tags %}
-            {% easy_map "Ukraine, Kiev" 600 400 %} <br />
-            <h4 id="post-location">Підписатися на новини:</h4>
-            <a class="btn btn-default"
+            {% easy_map post.location 600 400 %} <br />
+            <a id="subscribe-btn"
+               class="btn btn-default"
                href="{% url 'blogengine.views.post_subscribe' pub_date__year=post.pub_date.year pub_date__month=post.pub_date.month slug=post.slug %}">
-                <span class="glyphicon glyphicon-envelope">Підписатися на новини</span>
-            </a><br />
+                <span  id="subscribe-ic" class="glyphicon glyphicon-envelope"></span>
+                <p id="subscribe-text">Підписатися на новини</p>
+            </a><br /><br />
             {% if post.category %}
                 <a href="{{ post.category.get_absolute_url }}"><span class="label label-primary">{{ post.category.name }}</span></a>
             {% endif %}
@@ -29,7 +44,7 @@
                 {% endfor %}
             {% endif %}
         {% else %}
-            <h5 id="post-location">Увійдіть до системи, щоб побачити більше інформації.</h5>
+            <h5 id="post-location">Щоб побачити детальну інформацію, увійдіть у систему.</h5>
         {% endif %}
     </div>
 
