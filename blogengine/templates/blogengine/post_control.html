@@ -12,10 +12,10 @@
         {{ form.as_p }}
         <button name="edit" value="edit" type="submit" class="save btn btn-default">Редагувати запис</button>
     </form>
-    <h2>Розсилання повідомлення</h2>
+    <h2>Розсилання повідомлення підписчикам</h2>
     <form method="POST" class="delivery-form">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button name="edit" value="edit" type="submit" class="save btn btn-default">Розіслати повідомлення</button>
+        {{ deliveryform.as_p }}
+        <button name="send" type="submit" class="save btn btn-default">Розіслати повідомлення</button>
     </form>
 {% endblock %}

@@ -69,9 +69,12 @@ def getSearchResults(request):
     query = request.GET.get('q', '')
     page = request.GET.get('page', 1)
     if query:
+        queryCap = query[:1].upper() + query[1:]
         results = list(chain(
             Post.objects.filter(Q(tags__name__icontains=query)),
-            Post.objects.filter(Q(category__name__icontains=query))
+            Post.objects.filter(Q(tags__name__icontains=queryCap)),
+            Post.objects.filter(Q(category__name__icontains=query)),
+            Post.objects.filter(Q(category__name__icontains=queryCap))
         ))
     else:
         results = []
@@ -104,18 +107,29 @@ def post_new(request):
 def post_control(request, pub_date__year, pub_date__month, slug):
     post = get_object_or_404(Post, slug=slug)
     if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
+        if "edit" in request.POST:
+            form = PostForm(request.POST, instance=post)
             post = form.save(commit=False)
             post.author = request.user
             post.pub_date = timezone.now()
             post.site_id = get_current_site(request).id
             post.slug = slug
             post.save()
-            return redirect('/' + post.pub_date.year.__str__() + "/" + post.pub_date.month.__str__() + "/" + post.slug.__str__())
+        else:
+            deliveryform = DeliveryForm(request.POST)
+            delivery = deliveryform.save(commit=False)
+            delivery.author = request.user
+            delivery.delivery_date = timezone.now()
+            email_list = []
+            for subscriber in post.subscribers.all():
+                email_list.append(subscriber.email)
+            email = EmailMessage(delivery.title, delivery.text, to=email_list)
+            email.send()
+        return redirect('/' + post.pub_date.year.__str__() + "/" + post.pub_date.month.__str__() + "/" + post.slug.__str__())
     else:
         form = PostForm(instance=post)
-    return render(request, 'blogengine/post_control.html', {'form': form })
+        deliveryform = DeliveryForm()
+        return render(request, 'blogengine/post_control.html', {'form': form, 'deliveryform': deliveryform})
 
 def register(request):
     context = RequestContext(request)
