@@ -8,28 +8,39 @@
 {% endblock %}
 {% block content %}
     <div class="post col-md-12">
-        <h1><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h1>
+        <h1 id="post-title"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h1>
         <h6 id="post_pub_date">{{ post.pub_date }}</h6>
         <h4 id="post_text">{{ post.text|custom_markdown }}</h4>
-        <h4 id="post-location">Розташування:</h4>
-        {% load easy_maps_tags %}
-        {% easy_map "Ukraine, Kiev" 600 400 %} <br />
-        {% if post.category %}
-            <a href="{{ post.category.get_absolute_url }}"><span class="label label-primary">{{ post.category.name }}</span></a>
-        {% endif %}
-        {% if post.tags %}
-            {% for tag in post.tags.all %}
-                <a href="{{ tag.get_absolute_url }}"><span class="label label-success">{{ tag.name }}</span></a>
-            {% endfor %}
+        {% if user.is_authenticated %}
+            <h4 id="post-location">Розташування:</h4>
+            {% load easy_maps_tags %}
+            {% easy_map "Ukraine, Kiev" 600 400 %} <br />
+            <h4 id="post-location">Підписатися на новини:</h4>
+            <a class="btn btn-default"
+               href="{% url 'blogengine.views.post_subscribe' pub_date__year=post.pub_date.year pub_date__month=post.pub_date.month slug=post.slug %}">
+                <span class="glyphicon glyphicon-envelope">Підписатися на новини</span>
+            </a><br />
+            {% if post.category %}
+                <a href="{{ post.category.get_absolute_url }}"><span class="label label-primary">{{ post.category.name }}</span></a>
+            {% endif %}
+            {% if post.tags %}
+                {% for tag in post.tags.all %}
+                    <a href="{{ tag.get_absolute_url }}"><span class="label label-success">{{ tag.name }}</span></a>
+                {% endfor %}
+            {% endif %}
+        {% else %}
+            <h5 id="post-location">Увійдіть до системи, щоб побачити більше інформації.</h5>
         {% endif %}
     </div>
 
-    <div class="col-md-12">
-        <h4>Comments</h4>
-            <div class="fb-comments"
-                 data-href="http://{{ object.site }}{{ object.get_absolute_url }}"
-                 data-width="470"
-                 data-num-posts="10">
-            </div>
-    </div>
+    {% if user.is_authenticated %}
+        <div class="col-md-12">
+            <h4>Коментарі</h4>
+                <div class="fb-comments"
+                     data-href="http://{{ object.site }}{{ object.get_absolute_url }}"
+                     data-width="470"
+                     data-num-posts="10">
+                </div>
+        </div>
+    {% endif %}
 {% endblock %}

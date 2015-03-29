@@ -23,12 +23,24 @@ class PostForm(forms.ModelForm):
         fields = ('title', 'text', 'category', 'tags')
 
 class UserForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        self.fields['username'].label = "Логін"
+        self.fields['username'].help_text = 'Не більше 30 символів. Лише літери, цифри та @ / . / + / - / _ .'
+        self.fields['email'].label = "E-mail"
+        self.fields['password'].label = "Пароль"
+
     password = forms.CharField(widget=forms.PasswordInput())
     class Meta:
         model = User
         fields = ('username', 'email', 'password')
 
 class UserProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+        self.fields['website'].label = "Вебсайт"
+        self.fields['website'].help_text = 'Не обов\'язкове поле'
+
     class Meta:
         model = UserProfile
-        fields = ('website', 'picture')
+        fields = ['website']

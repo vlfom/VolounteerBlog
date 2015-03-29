@@ -72,7 +72,7 @@ h1, h2, h3, h4, h5, h6, span, li, p, a, .label {
 }
 
 .post {
-    margin-bottom: 70px;
+    margin-bottom: 40px;
 }
 
 .post h1 a, .post h1 a:visited {
@@ -90,9 +90,15 @@ h1, h2, h3, h4, h5, h6, span, li, p, a, .label {
 #navbar-search,
 #navbar-search-btn {
     opacity: 0.9 ;
-    margin-top: 2px ;
-    height: 30px ;
-    max-height: 30px ;
+    margin-top: 5px ;
+    height: 25px ;
+    max-height: 25px ;
+}
+
+#navbar-search-btn {
+    padding: 4px 10px 5px 10px ;
+    font-size: 12px ;
+    height: 25px ;
 }
 
 #footer {
@@ -117,6 +123,8 @@ h1, h2, h3, h4, h5, h6, span, li, p, a, .label {
 
 #footer-container > p {
     color: white ;
+    margin-left: 40px ;
+    text-shadow: 0 0 2px black ;
 }
 
 #post_pub_date {
@@ -127,11 +135,20 @@ h1, h2, h3, h4, h5, h6, span, li, p, a, .label {
     margin: 15px 0 15px 10px ;
 }
 
+.post.col-md-12 {
+    padding: 30px 20px 30px 20px ;
+    background: rgba(220,220,220,0.5) ;
+}
+
 .page-header {
     margin-bottom: 0 ;
     z-index: 10 ;
     border-bottom: 1px solid #777 ;
     height: 60px ;
+}
+
+#post-title {
+    margin-top: 0 ;
 }
 
 #content-title.container-content {
@@ -173,4 +190,45 @@ label[for="id_tags"] {
 
 #id_tags ~ .helptext {
     font-size: 0 ;
+}
+
+#login_form {
+    text-align: center ;
+}
+
+#user-login,
+#user-pass {
+    margin-bottom: 5px ;
+    margin-top: 10px ;
+}
+
+#login_form input[type="submit"] {
+    margin-top: 15px ;
+    width: 100px ;
+}
+
+#user_form label {
+    width: 70px ;
+}
+
+#user_form label[for="id_picture"] {
+    width: 200px ;
+    margin-top: 10px ;
+}
+
+#user_form input[name="submit"] {
+    margin-top: 20px ;
+    width: 200px ;
+}
+
+#user_form .align-center {
+    text-align: center ;
+}
+
+#user_form span.helptext {
+    margin-left: 10px ;
+}
+
+#main-link {
+    line-height: 18px ;
 }

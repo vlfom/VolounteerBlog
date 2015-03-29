@@ -46,10 +46,11 @@ class Post(models.Model):
     pub_date = models.DateTimeField()
     text = models.TextField()
     slug = models.SlugField(max_length=40, unique=True, blank=True, null=True)
-    author = models.ForeignKey(User)
     site = models.ForeignKey(Site)
     category = models.ForeignKey(Category)
     tags = models.ManyToManyField(Tag, blank=True, null=True)
+    author = models.ForeignKey(User, related_name='post_author')
+    subscribers = models.ManyToManyField(User, blank=True, null=True, related_name='post_subscribers')
 
     def get_absolute_url(self):
         return "/%s/%s/%s/" % (self.pub_date.year, self.pub_date.month, self.slug)
@@ -71,11 +72,10 @@ class Post(models.Model):
     class Meta:
         ordering = ["-pub_date"]
 
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-
     website = models.URLField(blank=True)
-    picture = models.ImageField(upload_to='profile_images', blank=True)
 
     def __unicode__(self):
         return self.user.username

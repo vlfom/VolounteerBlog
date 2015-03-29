@@ -12,17 +12,13 @@ sitemaps = {
 }
 
 urlpatterns = patterns('',
-    url(r'^(?P<page>\d+)?/?$', ListView.as_view(
-        model=Post,
-        paginate_by=5,
-        ),
-        name='index'),
+    url(r'^(?P<page>\d+)?/?$', ListView.as_view(model=Post,paginate_by=5,),name='index'),
     url(r'^(?P<pub_date__year>\d{4})/'
         r'(?P<pub_date__month>\d{1,2})/'
-        r'(?P<slug>[a-zA-Z0-9-]+)/?$', DetailView.as_view(
-        model=Post,
-        ),
-        name='post'),
+        r'(?P<slug>[a-zA-Z0-9-]+)/?$', DetailView.as_view(model=Post,),name='post'),
+    url(r'^(?P<pub_date__year>\d{4})/'
+        r'(?P<pub_date__month>\d{1,2})/'
+        r'(?P<slug>[a-zA-Z0-9-]+)/subscribe/$', views.post_subscribe, name='subscribe'),
     url(r'^category/(?P<slug>[a-zA-Z0-9-]+)/?$',
         CategoryListView.as_view(
             paginate_by=5,

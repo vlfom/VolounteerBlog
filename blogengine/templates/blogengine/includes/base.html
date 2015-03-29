@@ -15,7 +15,7 @@
         <div class="navbar navbar-static-top navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="/">
+                    <a class="navbar-brand" href="/" id="main-link">
                         Волонтерські програми
                     </a>
                 </div>
@@ -30,11 +30,13 @@
                             </a>
                         </li>
                         {% endfor %}
-                        <li>
-                            <a href="{% url 'blogengine.views.post_new' %}">
-                                <span>Додати пост</span>
-                            </a>
-                        </li>
+                        {% if user.is_authenticated %}
+                            <li>
+                                <a href="{% url 'blogengine.views.post_new' %}">
+                                    <span>Додати пост</span>
+                                </a>
+                            </li>
+                        {% endif %}
                     </ul>
                     <ul  class="nav navbar-nav pull-right">
                         <li>
@@ -70,7 +72,7 @@
             </div>
         </div>
         <div class="navbar navbar-fixed-bottom" id="footer">
-            <div class="container nav" id="footer-container">
+            <div class="container-content" id="footer-container">
                 <p>Copyright &copy; {% now "Y" %}</p>
             </div>
         </div>
