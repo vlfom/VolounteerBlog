@@ -2,13 +2,6 @@ from django.conf.urls import patterns, url
 from blogengine.views import *
 from . import views
 from django.views.generic import DetailView
-from django.contrib.sitemaps.views import sitemap
-from blogengine.sitemap import PostSitemap, FlatpageSitemap
-
-sitemaps = {
-    'posts': PostSitemap,
-    'pages': FlatpageSitemap
-}
 
 urlpatterns = patterns('',
     url(r'^(?P<page>\d+)?/?$', ListView.as_view(model=Post,paginate_by=5,),name='index'),
@@ -33,9 +26,7 @@ urlpatterns = patterns('',
             model=Tag,
         ),
         name='tag'),
-    url(r'^search', 'blogengine.views.getSearchResults', name='search'),
-    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
-            name='django.contrib.sitemaps.views.sitemap'),
+    url(r'^search/', views.getSearchResults, name='search'),
     url(r'^post/new/$', views.post_new, name='post_new'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),

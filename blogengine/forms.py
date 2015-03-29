@@ -31,7 +31,7 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('title', 'text', 'location', 'category', 'tags')
+        fields = ('title', 'text', 'location', 'category', 'tags',)
 
 class UserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

@@ -49,6 +49,7 @@ class Delivery(models.Model):
     recipients = models.ManyToManyField(User, blank=True, null=True, related_name='delivery_recipients')
 
     def save(self, *args, **kwargs):
+        super(Delivery, self).save(*args, **kwargs)
         if not self.slug:
             self.slug = original = defaultfilters.slugify(unidecode(self.title))
             number = 0
@@ -58,7 +59,6 @@ class Delivery(models.Model):
                     break
                 number += 1
                 self.slug = '%s-%d' % (original, number)
-        super(Delivery, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.title
@@ -85,7 +85,6 @@ class Post(models.Model):
         if not self.slug:
             self.slug = original = defaultfilters.slugify(unidecode(self.title))
             number = 0
-            print original
             while True:
                 if not Post.objects.filter(slug=self.slug).exists():
                     break

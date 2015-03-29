@@ -8,7 +8,7 @@ https://docs.djangoproject.com/en/1.7/howto/deployment/wsgi/
 """
 
 import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_tutorial_blog_ng.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "webchallenge_task.settings")
 
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()

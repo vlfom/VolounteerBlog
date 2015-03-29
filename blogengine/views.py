@@ -84,7 +84,8 @@ def getSearchResults(request):
     except EmptyPage:
         returned_page = pages.page(pages.num_pages)
     return render_to_response('blogengine/search_post_list.html',
-                              {'page_obj': returned_page,
+                              {'user': request.user,
+                               'page_obj': returned_page,
                                'object_list': returned_page.object_list,
                                'search': query})
 
@@ -107,29 +108,34 @@ def post_new(request):
 def post_control(request, pub_date__year, pub_date__month, slug):
     post = get_object_or_404(Post, slug=slug)
     if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        deliveryform = DeliveryForm(request.POST)
         if "edit" in request.POST:
-            form = PostForm(request.POST, instance=post)
-            post = form.save(commit=False)
-            post.author = request.user
-            post.pub_date = timezone.now()
-            post.site_id = get_current_site(request).id
-            post.slug = slug
-            post.save()
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.author = request.user
+                post.pub_date = timezone.now()
+                post.site_id = get_current_site(request).id
+                post.slug = slug
+                post.save()
+                return redirect('/' + post.pub_date.year.__str__() + "/" + post.pub_date.month.__str__() + "/" + post.slug.__str__())
         else:
-            deliveryform = DeliveryForm(request.POST)
-            delivery = deliveryform.save(commit=False)
-            delivery.author = request.user
-            delivery.delivery_date = timezone.now()
-            email_list = []
-            for subscriber in post.subscribers.all():
-                email_list.append(subscriber.email)
-            email = EmailMessage(delivery.title, delivery.text, to=email_list)
-            email.send()
-        return redirect('/' + post.pub_date.year.__str__() + "/" + post.pub_date.month.__str__() + "/" + post.slug.__str__())
+            if deliveryform.is_valid():
+                delivery = deliveryform.save(commit=False)
+                delivery.author = request.user
+                delivery.delivery_date = timezone.now()
+                email_list = []
+                for subscriber in post.subscribers.all():
+                    email_list.append(subscriber.email)
+                email = EmailMessage(delivery.title, delivery.text, to=email_list)
+                email.send()
+                return redirect('/' + post.pub_date.year.__str__() + "/" + post.pub_date.month.__str__() + "/" + post.slug.__str__())
+            else:
+                form = PostForm(instance=post)
     else:
         form = PostForm(instance=post)
         deliveryform = DeliveryForm()
-        return render(request, 'blogengine/post_control.html', {'form': form, 'deliveryform': deliveryform})
+    return render(request, 'blogengine/post_control.html', {'form': form, 'deliveryform': deliveryform})
 
 def register(request):
     context = RequestContext(request)

@@ -16,6 +16,6 @@
     <form method="POST" class="delivery-form">
         {% csrf_token %}
         {{ deliveryform.as_p }}
-        <button name="send" type="submit" class="save btn btn-default">Розіслати повідомлення</button>
+        <button name="send" value="send" type="submit" class="save btn btn-default">Розіслати повідомлення</button>
     </form>
 {% endblock %}

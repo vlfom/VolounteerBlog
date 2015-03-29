@@ -12,10 +12,6 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '8!43u8$-w9f%183r7ib)%ncuj!dyle0@&kj&w8hjq(d96b=!2t'
 
@@ -23,9 +19,6 @@ SECRET_KEY = '8!43u8$-w9f%183r7ib)%ncuj!dyle0@&kj&w8hjq(d96b=!2t'
 DEBUG = True
 
 TEMPLATE_DEBUG = True
-
-
-# Application definition
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -54,13 +47,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'django_tutorial_blog_ng.urls'
+ROOT_URLCONF = 'webchallenge_task.urls'
 
-WSGI_APPLICATION = 'django_tutorial_blog_ng.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
+WSGI_APPLICATION = 'webchallenge_task.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -68,9 +57,6 @@ DATABASES = {
         'NAME': '',
     }
 }
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.7/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -84,9 +70,6 @@ USE_TZ = True
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'blogengine/../templates')]
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.7/howto/static-files/
-
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/login/'
@@ -99,9 +82,6 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
-
-# Static asset configuration
-STATIC_ROOT = 'staticfiles'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
